@@ -4,9 +4,10 @@ library(utils)
 
 ## Download the data and extract it
 data_url <- "https://d396qusza40orc.cloudfront.net/dsscapstone/dataset/Coursera-SwiftKey.zip"
-download.file(data_url, method="curl", destfile="Coursera-SwiftKey.zip")
+zip_name <- "Coursera-SwiftKey.zip"
+download.file(data_url, method="curl", destfile=zip_name)
 
-unzip("Coursera-SwiftKey.zip", exdir="./data")
+unzip(zip_name, exdir="./data")
 
 path_to_blogs <- "./data/final/en_US/en_US.blogs.txt"
 path_to_news <- "./data/final/en_US/en_US.news.txt"
@@ -17,6 +18,8 @@ path_to_twitter <- "./data/final/en_US/en_US.twitter.txt"
 #readLines(con, 1) ## Read the next line of text 
 #readLines(con, 5) ## Read in the next 5 lines of text 
 #close(con) 
+
+file.remove(zip_name)
 
 # Q1: The en_US.blogs.txt, file is how many megabytes?
 # A1: ls -alh in the \verb|Coursera-Swiftkey/final/en_US|Coursera-Swiftkey/final/en_US
