@@ -35,6 +35,6 @@ are available on RPubs.
 
 * Final project submission (Shiny App): <a target="_blank"  href="https://ghost-8d.shinyapps.io/wordProphet/">wordProphet</a>
 
-* Final project submission (Presentation): <a target="_blank"  href="http://rpubs.com/OracleJavaNet/coursera_data_science_capstone">http://rpubs.com/OracleJavaNet/coursera_data_science_capstone/</a>
+* Final project submission (Presentation): <a target="_blank"  href="https://rpubs.com/Ghost_8D/669833">pitch presentation</a>
 
 * Source code files available on GitHub: <a target="_blank" href="https://github.com/Ghost-8D/data_science_capstone">repo</a>
