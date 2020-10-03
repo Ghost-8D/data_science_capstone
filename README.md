@@ -33,7 +33,7 @@ developed Shiny application as well as the RStudio Presenter files.
 The Shiny application is hosted on shinyapps.io and the Presentation (slides)
 are available on RPubs.
 
-* Final project submission (Shiny App): <a target="_blank" href="https://ghost-8d.shinyapps.io/wordProphet/">wordProphet</a>
+* Final project submission (Shiny App): <a target="_blank" href="https://ghost-8d.shinyapps.io/wordProphet_v1/">wordProphet</a>
 
 * Final project submission (Presentation): <a target="_blank" href="https://rpubs.com/Ghost_8D/669838">pitch presentation</a>
 
