@@ -19,7 +19,7 @@ includes a description of the major features of the training data based on our
 exploratory data analysis and to summarize our plans for creating the text
 predictive model.
 
-* Milestone Report is available on RPubs: <a target="_blank"  href="http://rpubs.com/OracleJavaNet/coursera-data-science-milestone-report">http://rpubs.com/OracleJavaNet/coursera-data-science-milestone-report</a>
+* Milestone Report is available on RPubs: <a target="_blank" href="https://rpubs.com/Ghost_8D/668118">EDA report</a>
 
 ## Final Project Submission
 
