@@ -5,8 +5,8 @@ account: ghost-8d
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 2936990
-bundleId: 3698473
+bundleId: 3698500
 url: https://ghost-8d.shinyapps.io/wordProphet/
-when: 1601726560.68505
+when: 1601727658.45409
 asMultiple: FALSE
 asStatic: FALSE

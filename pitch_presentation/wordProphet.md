@@ -27,7 +27,7 @@ The wordProphet app is located at:
     <li><a target="_blank" href="https://ghost-8d.shinyapps.io/wordProphet/">https://ghost-8d.shinyapps.io/wordProphet/</a></li>
 </ul>
 
-The source code files can be found on GitHub:
+The source code can be found on GitHub:
 
 <ul>
     <li><a target="_blank" href="https://github.com/Ghost-8D/data_science_capstone/tree/master/wordProphet">https://github.com/Ghost-8D/data_science_capstone/tree/master/wordProphet</a></li>
@@ -51,9 +51,9 @@ To build the predictive text model, a large corpus of blogs,
 news and twitter data was used. N-grams were extracted from 
 the corpus and then used to build the predictive text model.
 
-Various methods were explored to improve speed and
-accuracy using natural language processing and text mining
-techniques.
+Various methods were used in order to improve the speed and
+accuracy of the predictor, using natural language processing 
+and text mining techniques.
 </small>
 
 ========================================================
@@ -96,4 +96,4 @@ next words. Click the image below for a larger view
 of the user interface.
 </small>
 
-<a target="_blank" href="http://www.idevelopment.info/data/DataScience/uploads/next-word-predict-ui-large.png"><img src="img/wordProphet_UI.jpg"></a>
+<a target="_blank" href="https://github.com/Ghost-8D/data_science_capstone/blob/master/pitch_presentation/img/wordProphet_UI.jpg"><img src="img/wordProphet_UI.jpg"></a>
