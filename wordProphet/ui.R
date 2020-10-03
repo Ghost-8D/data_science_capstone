@@ -75,7 +75,7 @@ shinyUI(navbarPage(
             br(),
             img(src = "github.png"),
             a(target = "_blank", 
-              href = "https://github.com/Ghost-8D/data_science_capstone/tree/master/shiny-app/",
+              href = "https://github.com/Ghost-8D/data_science_capstone/tree/master/wordProphet",
               "Word Prophet")
         ),
         br(),
