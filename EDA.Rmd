@@ -1,0 +1,191 @@
+---
+title: "Exploratory Data Analysis"
+author: "Panayiotis L."
+date: "9/29/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Load libraries
+```{r add_libraries, warning=FALSE, message=FALSE}
+library(tidyr)
+library(dplyr)
+library(utils)
+library(downloader)
+library(plyr)
+library(knitr)
+library(tm)
+library(stringi)
+library(RWeka)
+library(ggplot2)
+```
+
+## Requirements
+```{r requirements}
+sessionInfo()
+```
+
+## Summary
+This is the Milestone Report for the Data Science Capstone project. 
+The goal of the capstone project is to create a predictive text model using a 
+large text corpus of documents. Natural language processing techniques will be 
+used to perform the analysis and build the predictive model.
+
+This milestone report describes the major features of the training data with our
+exploratory data analysis and summarizes our plans for creating the predictive 
+model.
+
+## Set paths to the three en_US datasets
+
+```{r set_paths}
+path_to_blogs <- "./data/final/en_US/en_US.blogs.txt"
+path_to_news <- "./data/final/en_US/en_US.news.txt"
+path_to_twitter <- "./data/final/en_US/en_US.twitter.txt"
+```
+
+## Download and extract the data
+The data sets includes text from 3 different sources: 1) News, 2) Blogs and 
+3) Twitter feeds. In this project, we will only focus on the English - US data sets.
+
+
+```{r get_data}
+# If all files already exist do not download them
+if (!file.exists(path_to_blogs) | !file.exists(path_to_news) | !file.exists(path_to_twitter)){
+    data_url <- "https://d396qusza40orc.cloudfront.net/dsscapstone/dataset/Coursera-SwiftKey.zip"
+    zip_name <- "Coursera-SwiftKey.zip"
+    if(!file.exists(zip_name)){
+        download.file(data_url, method="curl", destfile=zip_name)
+    }
+    unzip(zip_name, exdir="./data")
+    file.remove(zip_name)
+}
+```
+
+## Loading the Data
+
+```{r load_data}
+con <- file(path_to_twitter, "r") 
+twitter_lines <- readLines(con, skipNul = TRUE)
+# Close the file connection
+close(con)
+
+con <- file(path_to_blogs, "r") 
+blog_lines <- readLines(con, skipNul = TRUE)
+# Close the file connection 
+close(con)
+
+con <- file(path_to_news, "r") 
+news_lines <- readLines(con, skipNul = TRUE)
+# Close the file connection
+close(con)
+```
+
+Below you can find a summary of the data sets, like file sizes, line counts, 
+word counts and mean words per line.
+```{r display_summary}
+# Get file sizes
+blog_lines.size <- file.info(path_to_blogs)$size / 1024 ^ 2
+news_lines.size <- file.info(path_to_news)$size / 1024 ^ 2
+twitter_lines.size <- file.info(path_to_twitter)$size / 1024 ^ 2
+# Get words in files
+blog_lines.words <- stri_count_words(blog_lines)
+news_lines.words <- stri_count_words(news_lines)
+twitter_lines.words <- stri_count_words(twitter_lines)
+# Summary of the data sets
+data.frame(source = c("blogs", "news", "twitter"),
+           file.size.MB = c(blog_lines.size, news_lines.size, twitter_lines.size),
+           num.lines = c(length(blog_lines), length(news_lines), length(twitter_lines)),
+           num.words = c(sum(blog_lines.words), sum(news_lines.words), sum(twitter_lines.words)),
+           mean.num.words = c(mean(blog_lines.words), mean(news_lines.words), mean(twitter_lines.words)))
+
+```
+
+## Data Cleaning
+Before performing exploratory data analysis, we must first clean the data. This 
+involves removing URLs, special characters, punctuations, numbers, excess 
+whitespace, stopwords, and changing the text to lower case. Since the data 
+sets are quite large, we will randomly choose 2% of the data to demonstrate 
+the data cleaning and exploratory analysis also please take care of the UTF chars.
+```{r clean_data}
+# Sample the data
+set.seed(5000)
+data.sample <- c(sample(blog_lines, length(blog_lines) * 0.02),
+                 sample(news_lines, length(news_lines) * 0.02),
+                 sample(twitter_lines, length(twitter_lines) * 0.02))
+# Create corpus and clean the data
+corpus <- VCorpus(VectorSource(data.sample))
+toSpace <- content_transformer(function(x, pattern) gsub(pattern, " ", x))
+corpus <- tm_map(corpus, toSpace, "(f|ht)tp(s?)://(.*)[.][a-z]+")
+corpus <- tm_map(corpus, toSpace, "@[^\\s]+")
+corpus <- tm_map(corpus, tolower)
+corpus <- tm_map(corpus, removeWords, stopwords("en"))
+corpus <- tm_map(corpus, removePunctuation)
+corpus <- tm_map(corpus, removeNumbers)
+corpus <- tm_map(corpus, stripWhitespace)
+corpus <- tm_map(corpus, PlainTextDocument)
+
+remove(blog_lines)
+remove(news_lines)
+remove(twitter_lines)
+```
+
+## Exploratory Data Analysis (EDA)
+Now it's time to do some exploratory data analysis. It would be interesting to 
+find the most frequently occurring words in the data. Here we list the most 
+common (n-grams) uni-grams, bi-grams, and tri-grams.
+```{r eda_section, cache=TRUE}
+##annotate
+options(mc.cores=1)
+# we'll get the frequencies of the word
+getFreq <- function(tdm) {
+  freq <- sort(rowSums(as.matrix(tdm)), decreasing = TRUE)
+  return(data.frame(word = names(freq), freq = freq))
+}
+bigram <- function(x) NGramTokenizer(x, Weka_control(min = 2, max = 2))
+trigram <- function(x) NGramTokenizer(x, Weka_control(min = 3, max = 3))
+makePlot <- function(data, label) {
+    ggplot(data[1:30,], aes(reorder(word, -freq), freq)) +
+         labs(x = label, y = "Frequency") +
+         theme(axis.text.x = element_text(angle = 60, size = 12, hjust = 1)) +
+         geom_bar(stat = "identity", fill = I("green"))
+}
+# Get frequencies of most common n-grams in data sample
+freq1 <- getFreq(removeSparseTerms(TermDocumentMatrix(corpus), 0.9999))
+freq2 <- getFreq(removeSparseTerms(TermDocumentMatrix(corpus, control = list(tokenize = bigram)), 0.9999))
+freq3 <- getFreq(removeSparseTerms(TermDocumentMatrix(corpus, control = list(tokenize = trigram)), 0.9999))
+```
+
+The histogram below shows the 30 most common unigrams in the data sample.
+
+```{r hist1, fig.align='center'}
+makePlot(freq1, "30 Most Common Uni-grams")
+```
+
+This histogram illustrates the 30 most common bigrams in the data sample.
+
+```{r hist2, fig.align='center'}
+makePlot(freq2, "30 Most Common Bi-grams")
+```
+
+This histogram displays the 30 most common trigrams in the data sample.
+```{r hist3, fig.align='center'}
+makePlot(freq3, "30 Most Common Tri-grams")
+```
+
+## Conclusion
+This concludes our EDA. The next steps of this capstone project are to finalize 
+the predictive algorithm and deploy the algorithm as a Shiny app.
+
+Our predictive algorithm will be using n-gram models with frequency lookup 
+like the above exploratory data analysis. A promising strategy would be to 
+use a tri-gram model to predict the next word. If tri-gram fails to find a match, 
+then the algorithm will use the bi-gram model, and then to the uni-gram model, 
+if needed.
+
+The user interface for the Shiny app will include a text box that will allow the
+user to enter a phrase. Then the app will use the predictive algorithm to suggest 
+the next word that is more likely to appear. 
+

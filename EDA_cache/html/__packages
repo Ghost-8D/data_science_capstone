@@ -1,0 +1,17 @@
+base
+methods
+datasets
+utils
+grDevices
+graphics
+stats
+tidyr
+dplyr
+downloader
+plyr
+knitr
+NLP
+tm
+stringi
+RWeka
+ggplot2
