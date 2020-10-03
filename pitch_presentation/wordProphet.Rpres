@@ -24,7 +24,7 @@ algorithm.
 The wordProphet app is located at:
 
 <ul>
-    <li><a target="_blank" href="https://ghost-8d.shinyapps.io/wordProphet/">https://ghost-8d.shinyapps.io/wordProphet/</a></li>
+    <li><a target="_blank" href="https://ghost-8d.shinyapps.io/wordProphet_v1/">https://ghost-8d.shinyapps.io/wordProphet_v1/</a></li>
 </ul>
 
 The source code can be found on GitHub:

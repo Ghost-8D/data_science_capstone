@@ -77,7 +77,7 @@ cleanInput <- function(input) {
             input,
             ignore.case = FALSE,
             perl = TRUE
-        )
+        ) 
     input <-
         gsub("\\S+[@]\\S+",
              "",

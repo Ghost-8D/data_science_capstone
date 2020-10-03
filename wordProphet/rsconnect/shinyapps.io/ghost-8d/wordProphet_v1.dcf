@@ -1,0 +1,12 @@
+name: wordProphet_v1
+title: wordProphet_v1
+username:
+account: ghost-8d
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 2937240
+bundleId: 3698653
+url: https://ghost-8d.shinyapps.io/wordProphet_v1/
+when: 1601733393.04318
+asMultiple: FALSE
+asStatic: FALSE
