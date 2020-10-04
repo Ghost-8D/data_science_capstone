@@ -70,59 +70,30 @@ cleanInput <- function(input) {
     input <- tolower(input)
     
     # remove URL, email addresses, Twitter handles and hash tags
-    input <-
-        gsub(
-            "(f|ht)tp(s?)://(.*)[.][a-z]+",
-            "",
-            input,
-            ignore.case = FALSE,
-            perl = TRUE
-        ) 
-    input <-
-        gsub("\\S+[@]\\S+",
-             "",
-             input,
-             ignore.case = FALSE,
-             perl = TRUE)
-    input <-
-        gsub("@[^\\s]+",
-             "",
-             input,
-             ignore.case = FALSE,
-             perl = TRUE)
-    input <-
-        gsub("#[^\\s]+",
-             "",
-             input,
-             ignore.case = FALSE,
-             perl = TRUE)
+    input <-gsub("(f|ht)tp(s?)://(.*)[.][a-z]+", "", input, ignore.case = FALSE, perl = TRUE) 
+    input <-gsub("\\S+[@]\\S+", "", input, ignore.case = FALSE, perl = TRUE)
+    input <- gsub("@[^\\s]+", "", input, ignore.case = FALSE, perl = TRUE)
+    input <- gsub("#[^\\s]+", "", input, ignore.case = FALSE, perl = TRUE)
     
     # remove ordinal numbers
-    input <-
-        gsub("[0-9](?:st|nd|rd|th)",
-             "",
-             input,
-             ignore.case = FALSE,
-             perl = TRUE)
+    input <- gsub("[0-9](?:st|nd|rd|th)", "", input, ignore.case = FALSE, perl = TRUE)
     
     # remove profane words
-    input <- removeWords(input, profanity)
+    #input <- removeWords(input, profanity)
+    # Use chunks to reduce memory requirements
+    chunk <- 500
+    n <- length(profanity)
+    r <- rep(1:ceiling(n/chunk),each=chunk)[1:n]
+    d <- split(profanity,r)
+    for (i in 1:length(d)) {
+        input <- sapply(input, removeWords, c(paste(d[[i]])))
+    }
     
     # remove punctuation
-    input <-
-        gsub("[^\\p{L}'\\s]+",
-             "",
-             input,
-             ignore.case = FALSE,
-             perl = TRUE)
+    input <- gsub("[^\\p{L}'\\s]+", "", input, ignore.case = FALSE, perl = TRUE)
     
     # remove punctuation (leaving ')
-    input <-
-        gsub("[.\\-!]",
-             " ",
-             input,
-             ignore.case = FALSE,
-             perl = TRUE)
+    input <- gsub("[.\\-!]", " ", input, ignore.case = FALSE, perl = TRUE)
     
     # trim leading and trailing whitespace
     input <- gsub("^\\s+|\\s+$", "", input)
